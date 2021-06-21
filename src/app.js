@@ -7,8 +7,10 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 
+// routes
 app.get('/', (req, res, next) => {
-    res.end('<h1>Hello po module</h1>')
+    res.end(`<h1>Welcome to po module</h1>
+             <h2>This is the back-end</h2>`);
 });
 
 app.get('/itemlist', itemList);
