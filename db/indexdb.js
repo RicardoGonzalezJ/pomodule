@@ -1,4 +1,3 @@
-import { default as util } from 'util';
 import  { default as pg }  from 'pg';
 const { Pool } = pg;
 
