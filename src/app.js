@@ -1,5 +1,6 @@
 import express from 'express';
 import logger  from 'morgan';
+import { itemList } from './controller.js';
 
 const app = express();
 
@@ -7,9 +8,10 @@ app.use(logger('dev'));
 app.use(express.json());
 
 app.get('/', (req, res, next) => {
-    
     res.end('<h1>Hello po module</h1>')
 });
+
+app.get('/itemlist', itemList);
 
 // error handler
 app.use(function(err, req, res, next) {
