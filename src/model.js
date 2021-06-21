@@ -6,6 +6,6 @@ export async function displayItems() {
         const res = await dbcn.query(query);
         return res.rows;
     } catch (error) {
-        console.log(err.stack);
+        console.log(error.stack);
     }    
 }
