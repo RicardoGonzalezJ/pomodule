@@ -14,9 +14,14 @@ const pool = new Pool({
 });
 
 (async () => {
-    const client = await pool.connect();
-    console.log(client);
-    client.release();
+    try {
+        const client = await pool.connect();
+        console.log(`connected to ${client.database}`);
+        client.release();
+    } catch (error) {
+        console.log(error);
+    }
+    
 })();
 
 export default pool;
