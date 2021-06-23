@@ -18,7 +18,11 @@ const pool = new Pool({
         console.log(`connected to ${client.database}`);
         client.release();
     } catch (error) {
-        console.log(error);
+        if (error.code === 'ECONNREFUSED') {
+            console.log('Unable to connect with pomodule. Make sure postgres server is running.');
+        } else {
+            console.log(error);
+        }
     }
     
 })();
