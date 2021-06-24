@@ -27,7 +27,7 @@ describe('Testing Item Queries', () => {
         let unitPrice;
         oneItem = await selectItemById(item.id);
 
-        // unit_price come as string from table item so need to be parse
+        // unit_price come as string from table item so need to be parse (this need to be check)
         unitPrice = parseFloat(oneItem.item_unit_price.split('$')[1]);
        
         expect(oneItem.itemid).to.be.equal(item.id);
