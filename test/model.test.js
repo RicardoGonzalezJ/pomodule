@@ -1,19 +1,47 @@
-import util from 'util';
 import Chai from 'chai';
-const assert = Chai.assert;
-import { displayItems as itemTest } from '../src/model.js';
+import chaiHttp from 'chai-http';
+const expect = Chai.expect;
+Chai.use(chaiHttp);
+import app  from '../src/app.js';
+import { insertNewItem, deleteItem } from '../src/model.js';
 
-let itemListTest;
+describe('Testing Item Queries', () => {
 
-describe('Initialize', function () {
-    this.timeout(100000);
-    it('should successfully load the model', async function () {
-        try {
-            itemListTest = await itemTest();
-            
-        } catch (error) {
-            console.log('test model error:', error);
-            throw error;
-        }
-    })
-})
+    let itemToInsert;
+    let errorDuplicateKey;
+    const item = {
+        id: 6,
+        name: 'Product Test',
+        unit_price: 30.00
+    }
+
+    it('should insert items to item relation', async () => {
+        
+        itemToInsert = await insertNewItem(item);
+        expect(itemToInsert.command).to.be.equal('INSERT');
+    });
+
+    it('should fail with duplicate key value violates unique constraint "item_pkey"', async () => {
+        errorDuplicateKey = await insertNewItem(item);
+        expect(errorDuplicateKey.message).to.be.equal('duplicate key value violates unique constraint "item_pkey"');
+        
+    });
+
+    after(async () => {
+        await deleteItem(item.id);
+    });
+});
+
+describe('GET /itemlist', () => {
+    it('should return status 200', async () => {
+        let res = await Chai
+        .request(app)
+        .get('/itemlist')
+        
+        expect(res.status).to.equal(200);
+        expect(res).to.be.json;
+    });
+
+});
+
+
