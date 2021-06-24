@@ -37,7 +37,8 @@ describe('Testing Item Queries', () => {
 
     it('should fail with duplicate key value violates unique constraint "item_pkey"', async () => {
         errorDuplicateKey = await insertNewItem(item);
-        expect(errorDuplicateKey.message).to.be.equal('duplicate key value violates unique constraint "item_pkey"');
+        expect(errorDuplicateKey.message)
+               .to.be.equal('duplicate key value violates unique constraint "item_pkey"');
         
     });
 
