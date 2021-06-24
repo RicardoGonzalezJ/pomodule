@@ -1,4 +1,4 @@
-import { displayItems } from './model.js';
+import { displayItems } from './item.js';
 
 export async function itemList(req, res) {
     try {
