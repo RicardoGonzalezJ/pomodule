@@ -5,7 +5,6 @@ export async function selectAllEmployee(){
     let res;
     try {
         res = await dbcn.query(query);
-        console.log(res)
         return res;        
     } catch (error) {
         console.log('error employee selectAllEmployee', error);
