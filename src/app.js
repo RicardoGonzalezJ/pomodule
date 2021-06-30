@@ -1,6 +1,6 @@
 import express from 'express';
 import logger  from 'morgan';
-import { itemList } from './controller.js';
+import { itemList, getOrderInfo } from './controller.js';
 
 const app = express();
 
@@ -14,6 +14,7 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/itemlist', itemList);
+app.get('/getorderinfo', getOrderInfo);
 
 // error handler
 app.use(function(err, req, res, next) {
