@@ -7,7 +7,7 @@ import dbcn from '../db/indexdb.js';
     let res;
     try {
         res = await dbcn.query(query);
-        return res;
+        return res.rows;
     } catch (error) {
         console.log('Error selectAllSuppliers: ', error);
     }
