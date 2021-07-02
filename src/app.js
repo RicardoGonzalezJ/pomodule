@@ -1,11 +1,12 @@
 import express from 'express';
 import logger  from 'morgan';
-import { itemList, getOrderInfo } from './controller.js';
+import { itemList, getOrderInfo, addNewOrder } from './controller.js';
 
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // routes
 app.get('/', (req, res, next) => {
@@ -15,6 +16,7 @@ app.get('/', (req, res, next) => {
 
 app.get('/itemlist', itemList);
 app.get('/getorderinfo', getOrderInfo);
+app.post('/test', addNewOrder);
 
 // error handler
 app.use(function(err, req, res, next) {
