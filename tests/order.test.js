@@ -5,10 +5,23 @@ Chai.use(chaiHttp);
 import app  from '../src/app.js';
 import { deleteOrder, deleteOrderDetail } from '../src/order.js';
 
-
+describe('=====Testing GET /getdatatoaddneworder====', () => {
+    it('Should return status code 200 from /getdatatoaddneworder', async () => {
+        try {
+           let res = await Chai
+                        .request(app)
+                        .get('/getdatatoaddneworder')
+                        .set('Content-Type', 'application/json');
+            expect(res).to.have.status(200);
+            expect(res).to.be.json;
+        } catch (error) {
+            console.log('test get: ', error.stack);
+        }
+    });
+});
 describe('=====Testing POST /addNewOrder=====', () => {
     let orderDetails = [];
-    it('Should redirect to /getdatatoaddneworder', async () => {
+    it('Should Insert a new order to database', async () => {
         
         try {
             let data;
