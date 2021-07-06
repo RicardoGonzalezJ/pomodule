@@ -14,48 +14,15 @@ export async function itemList(req, res) {
     }
 }
 
-export async function getOrderInfo(req, res) {
+export async function getDataToAddNewOrder(_req, res) {
     try {
         const itemInfo = await displayItems();
         const storeInfo = await selectAllStore();
         const supplierInfo = await selectAllSuppliers();
         const employeeInfo = await selectAllEmployee();
-        // res.status(200).json({itemInfo, storeInfo, supplierInfo, employeeInfo})
-        res.send(`<html>
-                    <head>
-                     <title>Test</title>
-                    </head>
-                    <body>
-                     <h2>Create Order Test</h2>
-                     <form action="/test" method="POST">
-                        <h3>Order Data</h3>
-                            <input type="number" name="storeid" placeholder="storeid">
-                            <input type="number" name="onumber" placeholder="ordernumber">
-                            <input type="date" name="orderDate">
-                            <input type="number" name="supplierid" placeholder="supplier id">
-                            <input type="text" name="delivery" placeholder="delivery">
-                            <input type="text" name="payment" placeholder="payment">
-                            <input type="number" name="employeeid" placeholder="employee id">
-                        <hr/>
-                        <h3>Order Details</h3>
-                            <input type="number" name="orderD0[itemid]" placeholder="itemid">
-                            <input type="number" name="orderD0[qty]" placeholder="quantity">
-                            <input type="number" name="orderD0[unit_price]" placeholder="unit_price">
-                            <input type="number" name="orderD0[subtotal]" placeholder="subtotal">
-                            <br/>
-                            <br/>
-                            <input type="number" name="orderD1[itemid]" placeholder="itemid">
-                            <input type="number" name="orderD1[qty]" placeholder="quantity">
-                            <input type="number" name="orderD1[unit_price]" placeholder="unit_price">
-                            <input type="number" name="orderD1[subtotal]" placeholder="subtotal">
-                            <br/>
-                            <br/>
-                        <input type="submit" value="submit">
-                    </form>
-                    </body>
-                </html>`)
+        res.status(200).json({itemInfo, storeInfo, supplierInfo, employeeInfo});
     } catch (error) {
-        console.log('getOrderInfo: ', error.stack);
+        console.log('getdatatoaddneworder: ', error.stack);
     }
 }
 
@@ -90,14 +57,10 @@ export async function addNewOrder(req, res) {
         order.total = await totalOfTheOrder(subtotals);
         await saveNewOrder(order);
         orderDetails.forEach( async (item) => {
-            console.log(item)
             await saveOrderDetails(order.storeid, order.onumber, item);
         });
-        
-        console.log('odetail ',orderDetails);
-        console.log('osubtotals ', subtotals, 'total', order.total);
-        res.redirect(303, '/getorderinfo');
-        // res.status(200).send('Done');    
+    
+        res.redirect(200, '/getdatatoaddneworder');    
     } catch (error) {
         res.status(404).send(error.stack)
         console.log('message from addNewOrder: ', error.stack);
