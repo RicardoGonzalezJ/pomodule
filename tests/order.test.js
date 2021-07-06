@@ -8,7 +8,7 @@ import { deleteOrder, deleteOrderDetail } from '../src/order.js';
 
 describe('=====Testing POST /addNewOrder=====', () => {
     let orderDetails = [];
-    it('Should redirect to /', async () => {
+    it('Should redirect to /getdatatoaddneworder', async () => {
         
         try {
             let data;
