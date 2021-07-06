@@ -6,15 +6,15 @@ import app  from '../src/app.js';
 import { deleteOrder, deleteOrderDetail } from '../src/order.js';
 
 
-describe('=====Testing POST /test=====', () => {
+describe('=====Testing POST /addNewOrder=====', () => {
     let orderDetails = [];
-    it('Should redirect to getorderinfo', async () => {
+    it('Should redirect to /', async () => {
         
         try {
             let data;
             let res = await Chai
             .request(app)
-            .post('/test')
+            .post('/addneworder')
             .set('Content-Type', 'application/json')
             .send({ 
                 storeid: 1,
@@ -61,7 +61,7 @@ describe('=====Testing POST /test=====', () => {
                 }
             }      
         }
-        console.log('data', orderDetails);
+        
         expect(res).to.have.status(200);
           
         } catch (error) {
