@@ -3,13 +3,15 @@ import chaiHttp from 'chai-http';
 const expect = Chai.expect;
 Chai.use(chaiHttp);
 import app  from '../src/app.js';
+import { deleteOrder, deleteOrderDetail } from '../src/order.js';
 
 
 describe('=====Testing POST /test=====', () => {
-
+    let orderDetails = [];
     it('Should redirect to getorderinfo', async () => {
         
         try {
+            let data;
             let res = await Chai
             .request(app)
             .post('/test')
@@ -40,9 +42,26 @@ describe('=====Testing POST /test=====', () => {
                     qty: 4,
                     unit_price: 30.00,
                     subtotal: null
-                } 
-        })
-        // console.log(res);
+                },
+                item4: {
+                    itemid: 4,
+                    qty: 3,
+                    unit_price: 10.00,
+                    subtotal: null
+                }
+        });
+        
+        data = res.request._data;
+        for (const props in data) {
+            if (typeof data[props] === 'object') {
+                if (data[props] !== null) {
+                    data[props].storeid = data.storeid;
+                    data[props].onumber = data.onumber;
+                    orderDetails.push(data[props]);
+                }
+            }      
+        }
+        console.log('data', orderDetails);
         expect(res).to.have.status(200);
           
         } catch (error) {
@@ -50,30 +69,11 @@ describe('=====Testing POST /test=====', () => {
         }
         
     });
-    /*it('should insert order into porder', async () => {
-        totalArray = [subtotal1, subtotal2];
-        order.total = await totalOfTheOrder(totalArray);
-        await saveNewOrder(order);
-        
-    });
-
-    it('should insert order details into order_details table', async () => {
-            
-          orderDetail.forEach(async (item) => {
-              await saveOrderDetails(item);
-          });
-        
-    });
-
-    it('should do nothing', async () => {
-        
-        
-    });
 
     after(async () => {
-        orderDetail.forEach(async (item) => {
-            await deleteOrderDetail(item.storeid, item.ordernumber);
-        });
-        await deleteOrder(order.storeid, order.number);
-    });*/
+        orderDetails.forEach( async (item) => {
+            await deleteOrderDetail(item.storeid, item.onumber);
+        });    
+        await deleteOrder(1, 1);   
+    });
 });
