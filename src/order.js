@@ -6,7 +6,7 @@ export async function saveNewOrder(order) {
     const query = `INSERT INTO porder (storeid, ordernumber, orderdate, supplierid,
                                         orderdelyvery, orderpayment, employeeid, ordertotal)
                         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING storeid, ordernumber;`;
-    const values = [order.storeid, order.onumber, order.dateOrder, order.supplierid, order.delivery, order.payment,
+    const values = [order.storeid, order.onumber, order.orderDate, order.supplierid, order.delivery, order.payment,
                     order.employeeid, order.total];
 
     let res;
@@ -18,11 +18,11 @@ export async function saveNewOrder(order) {
     }
 }
 
-export async function saveOrderDetails(details) {
+export async function saveOrderDetails(storeid, ordernumber, details) {
     const query = `INSERT INTO order_detail (storeid, ordernumber, itemid, 
                                             itemqty, item_unit_price, itemsubtotal)
                     VALUES ($1, $2, $3, $4, $5, $6);`;
-    const values = [details.storeid, details.ordernumber, details.itemid,
+    const values = [storeid, ordernumber, details.itemid,
                     details.qty, details.unit_price, details.subtotal];
     let res;
     try {
@@ -54,6 +54,7 @@ export async function deleteOrderDetail(storeid, ordernumber) {
         return res;
     } catch (error) {
         console.log('deleteOrderDetail: ', error.stack);
+        return error.stack;
     }
 }
 
