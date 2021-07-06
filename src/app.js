@@ -15,8 +15,8 @@ app.get('/', (req, res, next) => {
 });
 
 app.get('/itemlist', itemList);
-app.get('/getorderinfo', getOrderInfo);
-app.post('/test', addNewOrder);
+app.get('/getdatatoaddneworder', getOrderInfo);
+app.post('/addneworder', addNewOrder);
 
 // error handler
 app.use(function(err, req, res, next) {
