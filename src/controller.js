@@ -2,6 +2,7 @@ import { displayItems } from './item.js';
 import { selectAllStore } from './store.js';
 import { selectAllSuppliers } from './supplier.js';
 import { selectAllEmployee } from './employee.js';
+import { saveNewOrder, saveOrderDetails } from './order.js';
 import { totalOfTheOrder } from './helpers.js';
 
 export async function itemList(req, res) {
@@ -80,8 +81,6 @@ export async function addNewOrder(req, res) {
         for (const props in req.body) {
             if (typeof req.body[props] === 'object') {
                 if (req.body[props] !== null) {
-                    req.body[props].storeid = order.storeid;
-                    req.body[props].onumber = order.onumber;
                     req.body[props].subtotal = req.body[props].qty * req.body[props].unit_price;
                     orderDetails.push(req.body[props]);
                     subtotals.push(req.body[props].subtotal);
@@ -89,10 +88,16 @@ export async function addNewOrder(req, res) {
             }      
         }
         order.total = await totalOfTheOrder(subtotals);
+        await saveNewOrder(order);
+        orderDetails.forEach( async (item) => {
+            console.log(item)
+            await saveOrderDetails(order.storeid, order.onumber, item);
+        });
+        
         console.log('odetail ',orderDetails);
         console.log('osubtotals ', subtotals, 'total', order.total);
-        // res.status(301).redirect('/getorderinfo');
-        res.status(200).send('Done');    
+        res.redirect(303, '/getorderinfo');
+        // res.status(200).send('Done');    
     } catch (error) {
         res.status(404).send(error.stack)
         console.log('message from addNewOrder: ', error.stack);
